@@ -8,7 +8,7 @@
 #include "scheduler.h"
 
 sTask SCH_tasks_G[MAX_OF_TASKS];
-uint8_t	current_task_id;
+uint32_t	current_task_id;
 
 void SCH_Init(){ //Initially setting scheduler
 	//delete any leftover tasks
@@ -43,7 +43,7 @@ void SCH_Dispatch_Tasks(){
 	}
 }
 
-void SCH_Add_Task(void (*pFunc)(void), const uint32_t DELAY, const uint32_t PERIOD){
+uint32_t SCH_Add_Task(void (*pFunc)(void), const uint32_t DELAY, const uint32_t PERIOD){
 	if (current_task_id == MAX_OF_TASKS){ //full of task
 		return;
 	}
@@ -54,12 +54,25 @@ void SCH_Add_Task(void (*pFunc)(void), const uint32_t DELAY, const uint32_t PERI
 	SCH_tasks_G[current_task_id].Period = PERIOD / TICK;
 	SCH_tasks_G[current_task_id].RunMe = 0;
 
-	current_task_id++; //increase current task id
+	return current_task_id++; //increase current task id
 }
 
-void SCH_Delete_Task(const uint32_t TaskID){
-	for (uint8_t i = TaskID; i < current_task_id-1; i++){
-		SCH_tasks_G[i] = SCH_tasks_G[i+1];
+uint8_t SCH_Delete_Task(const uint32_t TaskID){
+	uint8_t Return_code;
+	if (SCH_tasks_G[i].pTask){
+		for (uint8_t i = TaskID; i < current_task_id-1; i++){
+				SCH_tasks_G[i] = SCH_tasks_G[i+1];
+			}
+		SCH_tasks_G[current_task_id].TaskID = 0;
+		SCH_tasks_G[current_task_id].pTask = 0x0000;
+		SCH_tasks_G[current_task_id].Delay = 0;
+		SCH_tasks_G[current_task_id].Period = 0;
+		SCH_tasks_G[current_task_id].RunMe = 0;
+		current_task_id--;
+		Return_code = RETURN_NORMAL;
 	}
-	current_task_id--;
+	else {
+		Return_code = RETURN_ERROR;
+	}
+	return Return_code;
 }
