@@ -22,6 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdint.h>
 #include "global.h"
 /* USER CODE END Includes */
 
@@ -56,7 +57,7 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void toggle_led();
+void toggle_led(uint32_t led_index);
 /* USER CODE END 0 */
 
 /**
@@ -95,7 +96,11 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  SCH_Add_Task(toggle_led, 0, 500);
+  SCH_Add_Task(toggle_led, 0, 0, 400);
+  SCH_Add_Task(toggle_led, 1, 100, 400);
+  SCH_Add_Task(toggle_led, 2, 200, 400);
+  SCH_Add_Task(toggle_led, 3, 300, 400);
+  SCH_Add_Task(toggle_led, 4, 400, 0);
   while (1)
   {
     /* USER CODE END WHILE */
@@ -199,14 +204,17 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED_0_GPIO_Port, LED_0_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LED_0_Pin|LED_1_Pin|LED_2_Pin|LED_3_Pin
+                          |LED_4_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : LED_0_Pin */
-  GPIO_InitStruct.Pin = LED_0_Pin;
+  /*Configure GPIO pins : LED_0_Pin LED_1_Pin LED_2_Pin LED_3_Pin
+                           LED_4_Pin */
+  GPIO_InitStruct.Pin = LED_0_Pin|LED_1_Pin|LED_2_Pin|LED_3_Pin
+                          |LED_4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LED_0_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 }
 
@@ -215,8 +223,26 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	SCH_Update();
 }
 
-void toggle_led(){
-	HAL_GPIO_TogglePin(GPIOA, LED_0_Pin);
+void toggle_led(uint32_t led_index){
+	switch (led_index){
+	case 0:
+		HAL_GPIO_TogglePin(GPIOA, LED_0_Pin);
+		break;
+	case 1:
+		HAL_GPIO_TogglePin(GPIOA, LED_1_Pin);
+		break;
+	case 2:
+		HAL_GPIO_TogglePin(GPIOA, LED_2_Pin);
+		break;
+	case 3:
+		HAL_GPIO_TogglePin(GPIOA, LED_3_Pin);
+		break;
+	case 4:
+		HAL_GPIO_TogglePin(GPIOA, LED_4_Pin);
+		break;
+	default:
+		break;
+	}
 }
 /* USER CODE END 4 */
 

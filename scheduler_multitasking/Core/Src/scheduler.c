@@ -33,7 +33,7 @@ void SCH_Update(){
 void SCH_Dispatch_Tasks(){
 	for (uint8_t i = 0; i < current_task_id; i++){
 		if (SCH_tasks_G[i].RunMe){
-			(*SCH_tasks_G[i].pTask)(); 	//run task
+			(*SCH_tasks_G[i].pTask)(SCH_tasks_G[i].led_index); 	//run task
 			SCH_tasks_G[i].RunMe = 0;	//reset RunMe flag
 			//if task is one-shot, delete it
 			if (SCH_tasks_G[i].Period == 0){
@@ -43,13 +43,14 @@ void SCH_Dispatch_Tasks(){
 	}
 }
 
-uint32_t SCH_Add_Task(void (*pFunc)(void), const uint32_t DELAY, const uint32_t PERIOD){
+uint32_t SCH_Add_Task(void (*pFunc)(uint32_t), uint32_t led_index, const uint32_t DELAY, const uint32_t PERIOD){
 	if (current_task_id == MAX_OF_TASKS){ //full of task
-		return;
+		return RETURN_ERROR;
 	}
 	//add new task
 	SCH_tasks_G[current_task_id].TaskID = current_task_id;
 	SCH_tasks_G[current_task_id].pTask = pFunc;
+	SCH_tasks_G[current_task_id].led_index = led_index;
 	SCH_tasks_G[current_task_id].Delay = DELAY / TICK;
 	SCH_tasks_G[current_task_id].Period = PERIOD / TICK;
 	SCH_tasks_G[current_task_id].RunMe = 0;
@@ -59,10 +60,10 @@ uint32_t SCH_Add_Task(void (*pFunc)(void), const uint32_t DELAY, const uint32_t 
 
 uint8_t SCH_Delete_Task(const uint32_t TaskID){
 	uint8_t Return_code;
-	if (SCH_tasks_G[i].pTask){
+	if (SCH_tasks_G[TaskID].pTask){
 		for (uint8_t i = TaskID; i < current_task_id-1; i++){
 				SCH_tasks_G[i] = SCH_tasks_G[i+1];
-			}
+		}
 		SCH_tasks_G[current_task_id].TaskID = 0;
 		SCH_tasks_G[current_task_id].pTask = 0x0000;
 		SCH_tasks_G[current_task_id].Delay = 0;

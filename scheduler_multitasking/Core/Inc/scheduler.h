@@ -17,7 +17,8 @@
 
 typedef struct{
 	uint32_t	TaskID;			//id of the task
-	void 		(*pTask)(void);	//function of the task
+	void 		(*pTask)(uint32_t);	//function of the task
+	uint32_t	led_index; 		// led_id for pTask
 	uint32_t	Delay;			//when initally run the task
 	uint32_t	Period;			//how long run the task again
 	uint8_t		RunMe;			//is the task ready to run?
@@ -26,7 +27,7 @@ typedef struct{
 void SCH_Init();
 void SCH_Update();
 void SCH_Dispatch_Tasks();
-uint32_t SCH_Add_Task(void (*pFunc)(void), const uint32_t DELAY, const uint32_t PERIOD);
+uint32_t SCH_Add_Task(void (*pFunc)(uint32_t), uint32_t led_index, const uint32_t DELAY, const uint32_t PERIOD);
 uint8_t SCH_Delete_Task(const uint32_t TaskID);
 
 #endif /* INC_SCHEDULER_H_ */
