@@ -12,7 +12,7 @@ sTask SCH_tasks_G[MAX_OF_TASKS];
 uint32_t	current_task_id;
 uint32_t	time;
 
-void SCH_Init(){ //Initially setting scheduler
+void archv_SCH_Init(){ //Initially setting scheduler
 	//delete any leftover tasks
 	for (uint8_t i = 0; i < MAX_OF_TASKS; i++){
 		SCH_Delete_Task(i);
@@ -21,7 +21,7 @@ void SCH_Init(){ //Initially setting scheduler
 	time = 0;
 }
 
-void SCH_Update(){
+void archv_SCH_Update(){
 	time += TICK;
 	for (uint8_t i = 0; i < current_task_id; i++){
 		if (SCH_tasks_G[i].Delay > 0){
@@ -34,7 +34,7 @@ void SCH_Update(){
 	}
 }
 
-void SCH_Dispatch_Tasks(){
+void archv_SCH_Dispatch_Tasks(){
 	for (uint8_t i = 0; i < current_task_id; i++){
 		if (SCH_tasks_G[i].RunMe){
 			uart_send_str(">>>>>>>>");
@@ -52,7 +52,7 @@ void SCH_Dispatch_Tasks(){
 	}
 }
 
-uint32_t SCH_Add_Task(void (*pFunc)(uint32_t), uint32_t led_index, const uint32_t DELAY, const uint32_t PERIOD){
+uint32_t archv_SCH_Add_Task(void (*pFunc)(uint32_t), uint32_t led_index, const uint32_t DELAY, const uint32_t PERIOD){
 	if (current_task_id == MAX_OF_TASKS){ //full of task
 		return RETURN_ERROR;
 	}
@@ -67,7 +67,7 @@ uint32_t SCH_Add_Task(void (*pFunc)(uint32_t), uint32_t led_index, const uint32_
 	return current_task_id++; //increase current task id
 }
 
-uint8_t SCH_Delete_Task(const uint32_t TaskID){
+uint8_t archv_SCH_Delete_Task(const uint32_t TaskID){
 	uint8_t Return_code;
 	if (SCH_tasks_G[TaskID].pTask){
 		for (uint8_t i = TaskID; i < current_task_id-1; i++){

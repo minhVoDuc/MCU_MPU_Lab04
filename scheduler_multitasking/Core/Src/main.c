@@ -107,11 +107,11 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   uart_init();
-  SCH_Add_Task(toggle_led, 0, 2000, 2000);
-  SCH_Add_Task(toggle_led, 1, 2000, 4000);
-  SCH_Add_Task(toggle_led, 2, 2000, 6000);
-  SCH_Add_Task(toggle_led, 3, 2000, 8000);
-  SCH_Add_Task(toggle_led, 4, 2000, 0);
+  SCH_Add_Task(toggle_led, 0, 500, 500);
+  SCH_Add_Task(toggle_led, 1, 500, 1000);
+  SCH_Add_Task(toggle_led, 2, 500, 2000);
+  SCH_Add_Task(toggle_led, 3, 500, 4000);
+  SCH_Add_Task(toggle_led, 4, 500, 0);
   while (1)
   {
     /* USER CODE END WHILE */
@@ -249,7 +249,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, LED_0_Pin|LED_1_Pin|LED_2_Pin|LED_3_Pin
-                          |LED_4_Pin, GPIO_PIN_RESET);
+                          |LED_4_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pins : LED_0_Pin LED_1_Pin LED_2_Pin LED_3_Pin
                            LED_4_Pin */

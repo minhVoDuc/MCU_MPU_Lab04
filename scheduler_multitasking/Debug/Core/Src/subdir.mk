@@ -8,6 +8,8 @@ C_SRCS += \
 ../Core/Src/global.c \
 ../Core/Src/main.c \
 ../Core/Src/scheduler.c \
+../Core/Src/scheduler_ptr.c \
+../Core/Src/scheduler_task.c \
 ../Core/Src/stm32f1xx_hal_msp.c \
 ../Core/Src/stm32f1xx_it.c \
 ../Core/Src/syscalls.c \
@@ -19,6 +21,8 @@ OBJS += \
 ./Core/Src/global.o \
 ./Core/Src/main.o \
 ./Core/Src/scheduler.o \
+./Core/Src/scheduler_ptr.o \
+./Core/Src/scheduler_task.o \
 ./Core/Src/stm32f1xx_hal_msp.o \
 ./Core/Src/stm32f1xx_it.o \
 ./Core/Src/syscalls.o \
@@ -30,6 +34,8 @@ C_DEPS += \
 ./Core/Src/global.d \
 ./Core/Src/main.d \
 ./Core/Src/scheduler.d \
+./Core/Src/scheduler_ptr.d \
+./Core/Src/scheduler_task.d \
 ./Core/Src/stm32f1xx_hal_msp.d \
 ./Core/Src/stm32f1xx_it.d \
 ./Core/Src/syscalls.d \

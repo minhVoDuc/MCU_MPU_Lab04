@@ -24,10 +24,10 @@ typedef struct{
 	uint8_t		RunMe;			//is the task ready to run?
 } sTask;
 
-void SCH_Init();
-void SCH_Update();
-void SCH_Dispatch_Tasks();
-uint32_t SCH_Add_Task(void (*pFunc)(uint32_t), uint32_t led_index, const uint32_t DELAY, const uint32_t PERIOD);
-uint8_t SCH_Delete_Task(const uint32_t TaskID);
+void archv_SCH_Init();
+void archv_SCH_Update();
+void archv_SCH_Dispatch_Tasks();
+uint32_t archv_SCH_Add_Task(void (*pFunc)(uint32_t), uint32_t led_index, const uint32_t DELAY, const uint32_t PERIOD);
+uint8_t archv_SCH_Delete_Task(const uint32_t TaskID);
 
 #endif /* INC_SCHEDULER_H_ */

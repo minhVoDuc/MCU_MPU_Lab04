@@ -1,0 +1,2 @@
+scheduler_task.c:10:12:make_task	32	static
+scheduler_task.c:21:6:delete_task	16	static

@@ -8,7 +8,7 @@
 #ifndef INC_GLOBAL_H_
 #define INC_GLOBAL_H_
 
-#include "scheduler.h"
+#include "scheduler_ptr.h"
 #include "uart.h"
 
 #endif /* INC_GLOBAL_H_ */

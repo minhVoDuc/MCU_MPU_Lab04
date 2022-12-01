@@ -1,0 +1,9 @@
+scheduler_ptr.c:18:6:SCH_Init	4	static
+scheduler_ptr.c:28:6:SCH_Add_To_List	32	static
+scheduler_ptr.c:63:12:SCH_Get_From_List	16	static
+scheduler_ptr.c:72:6:SCH_queue_push	16	static
+scheduler_ptr.c:82:12:SCH_queue_pop	16	static
+scheduler_ptr.c:90:6:SCH_Update	16	static
+scheduler_ptr.c:111:6:SCH_Dispatch_Tasks	16	static
+scheduler_ptr.c:134:6:SCH_Add_Task	32	static
+scheduler_ptr.c:146:10:SCH_Delete_Task	16	static
