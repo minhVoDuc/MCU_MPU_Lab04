@@ -6,9 +6,11 @@
  */
 
 #include "scheduler.h"
+#include "uart.h"
 
 sTask SCH_tasks_G[MAX_OF_TASKS];
 uint32_t	current_task_id;
+uint32_t	time;
 
 void SCH_Init(){ //Initially setting scheduler
 	//delete any leftover tasks
@@ -16,9 +18,11 @@ void SCH_Init(){ //Initially setting scheduler
 		SCH_Delete_Task(i);
 	}
 	current_task_id = 0; //set init task id
+	time = 0;
 }
 
 void SCH_Update(){
+	time += TICK;
 	for (uint8_t i = 0; i < current_task_id; i++){
 		if (SCH_tasks_G[i].Delay > 0){
 			SCH_tasks_G[i].Delay--;
@@ -33,11 +37,16 @@ void SCH_Update(){
 void SCH_Dispatch_Tasks(){
 	for (uint8_t i = 0; i < current_task_id; i++){
 		if (SCH_tasks_G[i].RunMe){
+			uart_send_str(">>>>>>>>");
+			uart_send_num("Task running: ", SCH_tasks_G[i].TaskID);
+			uart_send_num("When start: ", time);
 			(*SCH_tasks_G[i].pTask)(SCH_tasks_G[i].led_index); 	//run task
+			uart_send_num("When end: ", time);
 			SCH_tasks_G[i].RunMe = 0;	//reset RunMe flag
 			//if task is one-shot, delete it
 			if (SCH_tasks_G[i].Period == 0){
 				SCH_Delete_Task(SCH_tasks_G[i].TaskID);
+				uart_send_str("Task one-shot die...");
 			}
 		}
 	}

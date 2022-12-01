@@ -9,5 +9,6 @@
 #define INC_GLOBAL_H_
 
 #include "scheduler.h"
+#include "uart.h"
 
 #endif /* INC_GLOBAL_H_ */
