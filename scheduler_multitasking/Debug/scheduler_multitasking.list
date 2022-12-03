@@ -162,21 +162,21 @@ int main(void)
  80001ae:	2101      	movs	r1, #1
  80001b0:	480f      	ldr	r0, [pc, #60]	; (80001f0 <main+0x80>)
  80001b2:	f000 fa9d 	bl	80006f0 <SCH_Add_Task>
-  SCH_Add_Task(toggle_led, 2, 500, 2000);
- 80001b6:	f44f 63fa 	mov.w	r3, #2000	; 0x7d0
+  SCH_Add_Task(toggle_led, 2, 500, 1500);
+ 80001b6:	f240 53dc 	movw	r3, #1500	; 0x5dc
  80001ba:	f44f 72fa 	mov.w	r2, #500	; 0x1f4
  80001be:	2102      	movs	r1, #2
  80001c0:	480b      	ldr	r0, [pc, #44]	; (80001f0 <main+0x80>)
  80001c2:	f000 fa95 	bl	80006f0 <SCH_Add_Task>
-  SCH_Add_Task(toggle_led, 3, 500, 4000);
- 80001c6:	f44f 637a 	mov.w	r3, #4000	; 0xfa0
+  SCH_Add_Task(toggle_led, 3, 500, 2000);
+ 80001c6:	f44f 63fa 	mov.w	r3, #2000	; 0x7d0
  80001ca:	f44f 72fa 	mov.w	r2, #500	; 0x1f4
  80001ce:	2103      	movs	r1, #3
  80001d0:	4807      	ldr	r0, [pc, #28]	; (80001f0 <main+0x80>)
  80001d2:	f000 fa8d 	bl	80006f0 <SCH_Add_Task>
-  SCH_Add_Task(toggle_led, 4, 500, 0);
+  SCH_Add_Task(toggle_led, 4, 2500, 0);
  80001d6:	2300      	movs	r3, #0
- 80001d8:	f44f 72fa 	mov.w	r2, #500	; 0x1f4
+ 80001d8:	f640 12c4 	movw	r2, #2500	; 0x9c4
  80001dc:	2104      	movs	r1, #4
  80001de:	4804      	ldr	r0, [pc, #16]	; (80001f0 <main+0x80>)
  80001e0:	f000 fa86 	bl	80006f0 <SCH_Add_Task>
@@ -936,13 +936,13 @@ void SCH_Update(void){ //update from SCH_tasks_G, if could run -> push to ready 
  8000600:	b580      	push	{r7, lr}
  8000602:	b082      	sub	sp, #8
  8000604:	af00      	add	r7, sp, #0
-	//NOTE: calculations are in *TICKS* (not miliseconds)
-	time += TICK;
+	time += TICK; //use for sending to uart
  8000606:	4b17      	ldr	r3, [pc, #92]	; (8000664 <SCH_Update+0x64>)
  8000608:	681b      	ldr	r3, [r3, #0]
  800060a:	330a      	adds	r3, #10
  800060c:	4a15      	ldr	r2, [pc, #84]	; (8000664 <SCH_Update+0x64>)
  800060e:	6013      	str	r3, [r2, #0]
+	//only calculate first element of waiting queue
 	if (SCH_tasks_G.head){
  8000610:	4b15      	ldr	r3, [pc, #84]	; (8000668 <SCH_Update+0x68>)
  8000612:	685b      	ldr	r3, [r3, #4]
@@ -1057,11 +1057,12 @@ void SCH_Dispatch_Tasks(void){ //get from ready queue
  80006bc:	687b      	ldr	r3, [r7, #4]
  80006be:	2200      	movs	r2, #0
  80006c0:	741a      	strb	r2, [r3, #16]
+			//adding task again to waiting queue
 			SCH_Add_To_List(runningTask);
  80006c2:	6878      	ldr	r0, [r7, #4]
  80006c4:	f7ff fee2 	bl	800048c <SCH_Add_To_List>
+		}
 		else {
-//			SCH_Delete_Task(runningTask);
 			uart_send_str("Task one-shot die...");
 		}
 	}

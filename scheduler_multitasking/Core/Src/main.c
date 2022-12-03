@@ -109,9 +109,9 @@ int main(void)
   uart_init();
   SCH_Add_Task(toggle_led, 0, 500, 500);
   SCH_Add_Task(toggle_led, 1, 500, 1000);
-  SCH_Add_Task(toggle_led, 2, 500, 2000);
-  SCH_Add_Task(toggle_led, 3, 500, 4000);
-  SCH_Add_Task(toggle_led, 4, 500, 0);
+  SCH_Add_Task(toggle_led, 2, 500, 1500);
+  SCH_Add_Task(toggle_led, 3, 500, 2000);
+  SCH_Add_Task(toggle_led, 4, 2500, 0);
   while (1)
   {
     /* USER CODE END WHILE */

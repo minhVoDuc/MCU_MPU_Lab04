@@ -11,13 +11,13 @@
 #include "scheduler_task.h"
 
 typedef struct {
-	uint32_t cur_size;
-	schedTask *head;
+	uint32_t cur_size; //current size of the list
+	schedTask *head; //first element
 } schedList;
 
 typedef struct {
-	schedTask *head;
-	schedTask *tail;
+	schedTask *head; //first element - for pop() function
+	schedTask *tail; //last element - for push() function
 } schedQueue;
 
 #define SCH_MAX_TASKS 	10

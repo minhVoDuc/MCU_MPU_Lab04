@@ -88,8 +88,8 @@ schedTask* SCH_queue_pop() {
 
 //------------------------- interface method ---------------------------------
 void SCH_Update(void){ //update from SCH_tasks_G, if could run -> push to ready queue
-	//NOTE: calculations are in *TICKS* (not miliseconds)
-	time += TICK;
+	time += TICK; //use for sending to uart
+	//only calculate first element of waiting queue
 	if (SCH_tasks_G.head){
 		if (SCH_tasks_G.head->Delay == 0) {
 			//the task is due to run
@@ -121,10 +121,10 @@ void SCH_Dispatch_Tasks(void){ //get from ready queue
 		//if it's a 'oneshot' task, remove it from the array
 		if (runningTask->Period != 0){
 			runningTask->RunMe = 0; //reset RunMe flag
+			//adding task again to waiting queue
 			SCH_Add_To_List(runningTask);
 		}
 		else {
-//			SCH_Delete_Task(runningTask);
 			uart_send_str("Task one-shot die...");
 		}
 	}
